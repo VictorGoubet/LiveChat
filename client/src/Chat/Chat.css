@@ -1,0 +1,123 @@
+/* Chat container */
+.chat-container {
+	width: 100%;
+	max-width: 100%;
+	margin: 0 auto;
+	background-color: #1e1e1e;
+	color: #fff;
+	font-family: sans-serif;
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+	overflow: hidden;
+  }
+
+  
+  /* Chat header */
+  .chat-header {
+	background-color: #2f2e2e;
+	padding: 10px;
+  }
+  
+  /* Chat messages */
+  .chat-messages {
+	flex: 1;
+	padding: 10px;
+	overflow-y: auto;
+  }
+  
+  /* Chat message */
+  .message {
+	margin: 10px 0;
+	display: flex;
+	align-items: flex-end;
+  }
+  
+  .message-username {
+	font-size: 0.8rem;
+	color: #9ea4ad;
+	margin-bottom: 0.2rem;
+  }
+
+
+  /* Received message */
+  .received {
+	justify-content: flex-start;
+  }
+  
+  /* Sent message */
+  .sent {
+	justify-content: flex-end;
+  }
+  
+  /* Message content */
+  .message-content {
+	padding: 10px;
+	border-radius: 10px;
+  }
+  
+  /* Received message content */
+  .received .message-content {
+	background-color: #282828;
+  }
+  
+  /* Sent message content */
+  .sent .message-content {
+	background-color: #4a4a4a;
+  }
+  
+  /* Chat form */
+  .chat-form {
+	display: flex;
+	align-items: center;
+	background-color: #202020;
+	padding: 10px;
+  }
+  
+  /* Chat input */
+  .chat-input {
+	flex: 1;
+	padding: 10px;
+	border-radius: 20px;
+	border: none;
+	background-color: #2f2e2e;
+	color: #fff;
+	font-size: 16px;
+  }
+  
+  /* Emoji button */
+  .emoji-btn {
+	margin-left: 10px;
+	cursor: pointer;
+	background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQysU6qizVcNcUnUM1NQhRD-EEsglyY56-pqw&usqp=CAU);
+	background-repeat: no-repeat;
+	background-size: 20px 20px;
+	height: 20px;
+	width: 20px;
+  }
+  
+  /* Send button */
+  .chat-button {
+	margin-left: 10px;
+	padding: 10px;
+	border-radius: 20px;
+	border: none;
+	background-color: #2f2e2e;
+	color: #fff;
+	cursor: pointer;
+  }
+  
+  /* Emoji picker */
+  .emoji-picker {
+	position: absolute;
+	bottom: 10%;
+	right: 0;
+	background-color: #202020;
+	padding: 10px;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	z-index: 1;
+  }
+  
