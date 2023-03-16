@@ -29,10 +29,7 @@ io.on('connection', (socket) => {
 });
 
 // Start the server
-let port = process.env.PORT;
-if (port == null || port == "") {
-  port = 5000;
-}
+let port = 5000;
 server.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });
