@@ -2,6 +2,12 @@
   "name": "live-chat",
   "version": "0.1.0",
   "scripts": {
-  "start": "cd server && npm start",
-  "heroku-postbuild": "cd client && npm install && npm run build && cd ../server && npm install"
-}}
+    "back": "cd server && npm start",
+    "front": "cd client && npm start",
+    "start": "concurrently \"npm run back\" \"npm run front\"",
+    "heroku-postbuild": "npm install && cd client && npm install && npm run build && cd ../server && npm install"
+  },
+  "dependencies": {
+    "concurrently": "^7.6.0"
+  }
+}

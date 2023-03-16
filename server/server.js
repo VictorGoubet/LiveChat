@@ -1,10 +1,24 @@
 const http = require('http');
+const path = require('path');
+const express = require('express')
 const socketio = require('socket.io');
 
-
-server = http.createServer();
+const app = express();
+const server = http.createServer(app);
 const io = socketio(server, {cors: {origin: '*'}});
 
+
+
+// Have Node serve the files for our built React app
+app.use(express.static(path.resolve(__dirname, '../client/build')));
+
+// All other GET requests not handled before will return our React app
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
+});
+
+
+// Socket connections
 io.on('connection', (socket) => {
   console.log(`New client connected: ${socket.id}`);
 
@@ -29,7 +43,7 @@ io.on('connection', (socket) => {
 });
 
 // Start the server
-let port = 5000;
+let port = process.env.PORT || 5000
 server.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });
