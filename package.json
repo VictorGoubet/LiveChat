@@ -1,0 +1,7 @@
+{
+  "name": "live-chat",
+  "version": "0.1.0",
+  "scripts": {
+  "start": "cd server && npm start",
+  "heroku-postbuild": "cd client && npm install && npm run build && cd ../server && npm install"
+}}
