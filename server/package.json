@@ -1,15 +1,14 @@
 {
   "name": "server",
-  "version": "1.0.0",
-  "description": "",
-  "main": "server.js",
+  "version": "0.1.0",
   "scripts": {
-    "start": "node server.js",
+    "back": "node server.js",
+    "front":"cd ../client && npm start",
+    "start":"concurrently \"npm run back\" \"npm run front\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
+    "concurrently": "^7.6.0",
     "socket.io": "^4.6.1"
   }
 }

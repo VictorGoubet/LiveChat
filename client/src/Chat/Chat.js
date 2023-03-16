@@ -12,7 +12,8 @@ class Chat extends Component {
       showPicker: false,
       isPC: window.innerWidth > 900,
     };
-    this.socket = io('http://localhost:5000');
+    let port = (process.env.PORT == null || process.env.PORT === "")?5000:process.env.PORT
+    this.socket = io(`http://localhost:${port}`);
     this.socket.addEventListener('message', this.handleMessage);
     window.addEventListener('resize', this.handleResize);
   }
