@@ -11,10 +11,12 @@ class Chat extends Component {
       message: '',
       showPicker: false,
       k_messages:100,
+      n_users:0,
       isPC: window.innerWidth > 900,
     };
     this.socket = io();
     this.socket.addEventListener('message', this.handleMessage);
+    this.socket.addEventListener('connection', this.handleNUsers);
     window.addEventListener('resize', this.handleResize);
   }
 
@@ -41,6 +43,10 @@ class Chat extends Component {
     this.setState((prevState) => ({
       messages: [...prevState.messages, event],
     }));
+  };
+
+  handleNUsers = (event) => {
+    this.setState({n_users:event});
   };
 
   handleEmojiSelect = (emojiData, event) => {
@@ -85,6 +91,7 @@ class Chat extends Component {
       <div className="chat-container">
         <div className="chat-header">
           <h1>Elite Chat</h1>
+          <h4> 🟢 {this.state.n_users} users</h4>
         </div>
         <div className="chat-messages">
           {messages.map((msg, index) => (

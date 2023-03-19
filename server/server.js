@@ -40,9 +40,11 @@ app.get('*', (req, res) => {
        * Socket connections *
        **********************/
 
+let n_users = 0
 io.on('connection', (socket) => {
   console.log(`New client connected: ${socket.id}`);
-
+  n_users += 1;
+  socket.emit('connection', n_users);
 
   // Action on message topic
   socket.on('message', (data) => {
@@ -58,13 +60,15 @@ io.on('connection', (socket) => {
 
       // Send the message back to the sender with a different type
       data.type = 'sent'
-      socket.emit('message', data);
+      io.emit('message', data);
     })    
   });
 
   // Log disconnection
   socket.on('disconnect', () => {
     console.log(`Client disconnected: ${socket.id}`);
+    n_users -= 1;
+    socket.broadcast.emit('connection', n_users);
   });
 });
 
