@@ -10,6 +10,7 @@ class Chat extends Component {
       messages: [],
       message: '',
       showPicker: false,
+      k_messages:100,
       isPC: window.innerWidth > 900,
     };
     this.socket = io();
@@ -17,9 +18,16 @@ class Chat extends Component {
     window.addEventListener('resize', this.handleResize);
   }
 
+  
+
+  componentDidMount(){
+    this.loadHistory();
+  };
+
+
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleResize);
-  }
+  };
 
   handleResize = () => {
     const isPC = window.innerWidth > 900;
@@ -27,9 +35,9 @@ class Chat extends Component {
       this.setState({ isPC });
     }
   };
+  
 
   handleMessage = (event) => {
-    console.log(event)
     this.setState((prevState) => ({
       messages: [...prevState.messages, event],
     }));
@@ -54,12 +62,22 @@ class Chat extends Component {
   };
 
   handleEmojiClick = () => {
-    console.log(this.state.showPicker)
     this.setState((prevState) => ({
       showPicker: !prevState.showPicker,
     }));
   };
-  
+
+
+  async loadHistory() {
+    let messages = await fetch('/api/load_history', {
+                                                      method:'POST', 
+                                                      headers:{'Content-Type':'application/json'}, 
+                                                      body:JSON.stringify({k:this.state.k_messages})
+                                                    });
+    messages = await messages.json();
+    messages = messages.data;
+    this.setState({messages});
+  };
 
   render() {
     const { messages, message, showPicker, isPC } = this.state;
@@ -70,15 +88,15 @@ class Chat extends Component {
         </div>
         <div className="chat-messages">
           {messages.map((msg, index) => (
-            <div className={`message ${msg.type === 'received' ? 'received' : 'sent'}`}>
-            {msg.type === 'received' && (
-              <div className="message-username">{msg.username}</div>
-            )}
-            <div className="message-content">{msg.message}</div>
-          </div>
+            <div className={`message ${msg.type === 'sent' ? 'sent' : 'received'}`}>
+              {msg.type !== 'sent' && (
+                <div className="message-username">{msg.username}</div>
+              )}
+              <div className="message-content">{msg.message}</div>
+            </div>
           ))}
         </div>
-        {isPC && showPicker &&(
+        {isPC && showPicker && (
           <div className="emoji-picker">
             <EmojiPicker onEmojiClick={this.handleEmojiSelect} theme="dark" />
           </div>
