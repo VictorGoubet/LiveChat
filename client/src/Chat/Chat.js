@@ -95,7 +95,7 @@ class Chat extends Component {
         </div>
         <div className="chat-messages">
           {messages.map((msg, index) => (
-            <div className={`message ${msg.type === 'sent' ? 'sent' : 'received'}`}>
+            <div key={index} className={`message ${msg.type === 'sent' ? 'sent' : 'received'}`}>
               {msg.type !== 'sent' && (
                 <div className="message-username">{msg.username}</div>
               )}

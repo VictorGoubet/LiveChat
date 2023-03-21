@@ -60,7 +60,7 @@ io.on('connection', (socket) => {
 
       // Send the message back to the sender with a different type
       data.type = 'sent'
-      io.emit('message', data);
+      socket.emit('message', data);
     })    
   });
 
