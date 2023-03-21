@@ -44,7 +44,7 @@ let n_users = 0
 io.on('connection', (socket) => {
   console.log(`New client connected: ${socket.id}`);
   n_users += 1;
-  socket.emit('connection', n_users);
+  io.emit('connection', n_users);
 
   // Action on message topic
   socket.on('message', (data) => {
