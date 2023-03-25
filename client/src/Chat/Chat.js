@@ -1,7 +1,10 @@
+import './Chat.css';
+import Cookies from 'js-cookie'
+import io from 'socket.io-client';
 import React, { Component } from 'react';
 import EmojiPicker from 'emoji-picker-react';
-import io from 'socket.io-client';
-import './Chat.css';
+
+
 
 class Chat extends Component {
   constructor(props) {
@@ -61,8 +64,7 @@ class Chat extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    const { message } = this.state;
-    const data = JSON.stringify({ message });
+    const data = JSON.stringify({message:this.state.message, username:this.props.username});
     this.socket.send(data);
     this.setState({ message: '', showPicker: false });
   };
@@ -74,6 +76,11 @@ class Chat extends Component {
   };
 
 
+  handleLogOut = () => {
+    Cookies.remove('live-chat')
+    window.location.href = '/login'
+  }
+
   async loadHistory() {
     let messages = await fetch('/api/load_history', {
                                                       method:'POST', 
@@ -82,6 +89,9 @@ class Chat extends Component {
                                                     });
     messages = await messages.json();
     messages = messages.data;
+    for (let i=0; i<messages.length; i++){
+      messages[i].type = messages[i].username === this.props.username?'sent':'received'
+    }
     this.setState({messages});
   };
 
@@ -90,8 +100,10 @@ class Chat extends Component {
     return (
       <div className="chat-container">
         <div className="chat-header">
+        <button className='button-logout' onClick={this.handleLogOut}>Log out</button>
           <h1>Elite Chat</h1>
           <h4> 🟢 {this.state.n_users} users</h4>
+          
         </div>
         <div className="chat-messages">
           {messages.map((msg, index) => (

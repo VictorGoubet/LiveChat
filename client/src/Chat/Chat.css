@@ -12,6 +12,17 @@
 	overflow: hidden;
   }
 
+  .button-logout{
+	float:right;
+	padding: 0.5rem 2rem;
+	font-size: 1rem;
+	border-radius: 5px;
+	border: none;
+	background-color: #1e1e1e;
+	color: #fff;
+	cursor: pointer;
+  }
+
   
   /* Chat header */
   .chat-header {
@@ -124,3 +135,21 @@
 	z-index: 1;
   }
   
+
+  /* Style the scrollbar */
+::-webkit-scrollbar {
+	width: 10px;
+  }
+  
+/* Track */
+::-webkit-scrollbar-track {
+background: #f1f1f1;
+border-radius: 5px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+background-color: #2f2e2e;
+border-radius: 5px;
+border: 2px solid #f1f1f1;
+}

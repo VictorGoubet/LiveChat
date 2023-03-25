@@ -10,12 +10,13 @@
   color: #fff;
 }
 
-/* Sign Up Heading */
-.signup-h1 {
+/* Login Heading */
+.login-h1 {
   font-size: 2rem;
   margin-top: 2rem;
   margin-bottom: 1rem;
 }
+
 
 
 /* Form Group */
@@ -27,26 +28,27 @@
   align-items: center;
 }
 
-/* Sign Up Input */
-.signup-input {
+/* Login Input */
+.login-input {
   width: 100%;
   padding: 0.5rem;
   font-size: 1rem;
   border-radius: 5px;
   border: 2px solid;
+  margin-bottom: 1rem;
 }
 
-.signup-input:hover{
+.login-input:hover{
   border: 2px solid #007bff;
 }
 
-.username-label{
+.token-label{
   color: red;
   margin-top: 1rem;
 }
 
-/* Sign Up Button */
-.signup-button {
+/* Login Button */
+.login-button {
   margin-top: 1rem;
   padding: 0.5rem 2rem;
   font-size: 1rem;
@@ -57,7 +59,7 @@
   cursor: pointer;
 }
 
-.signup-button:hover{
+.login-button:hover{
   background-color: #525050;
 }
 
@@ -73,8 +75,8 @@ a:hover {
 }
 
 @media only screen and (min-width: 768px) {
-  /* Sign Up Form */
-  .signup-form {
+  /* Login Form */
+  .login-form {
     width: 50%;
   }
 }
