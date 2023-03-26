@@ -35,7 +35,7 @@ function App() {
   }
 
   return (
-    <div>
+    <div className='app-container'>
       <BrowserRouter>
         <Routes>
           <Route exact path='/' element={<CustomRoute is_authenticated={typeof userInfo == 'object'} logged_page=<Chat userInfo={userInfo}/> not_logged_page=<Navigate to="/login"/>/>}/>

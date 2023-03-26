@@ -51,7 +51,7 @@ db_manager.connect(['messages', 'users']).then(x=>{
         if (is_available){
           const qrCodeData = await generateGoogleAutQRCode(username);
           await db_manager.store_secret(username, qrCodeData.secret);
-          res.status(200).json({qrCodeImage:qrCodeData.qrCodeImage});
+          res.status(200).json({qrCodeImage:qrCodeData.qrCodeImage, configKey:qrCodeData.secret});
         }
         else{
           res.status(401).json({error:'username not available anymore'});

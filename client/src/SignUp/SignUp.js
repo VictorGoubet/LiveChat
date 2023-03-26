@@ -1,5 +1,5 @@
-import './SignUp.css';
 import React, { Component } from 'react';
+import './SignUp.css';
 
 
 class SignUp extends Component {
@@ -8,9 +8,13 @@ class SignUp extends Component {
     this.state = {
       qrData:null,
       username:'',
-      is_available:null
+      is_available:null,
+      token_mode:false,
+      configKey:'None'
     };
   }
+
+
 
   generateQRCode = async() => {
     let response = await fetch('/api/generateGoogleAutQRCode', {method:'POST', 
@@ -19,6 +23,7 @@ class SignUp extends Component {
 
     if (response.status === 200){
       response = await response.json();
+      this.setState({configKey:response.configKey});
       this.setState({qrData:response.qrCodeImage});
     }
     else{
@@ -26,6 +31,10 @@ class SignUp extends Component {
     }
   };
 
+
+  handleTokenMode = () =>{
+    this.setState({token_mode:!this.state.token_mode})
+  }
 
   handleUsername = async (event) => {
     // check for availability
@@ -57,7 +66,24 @@ class SignUp extends Component {
     return (
       <div className="container">
         <h1 className='signup-h1'>Sign Up</h1>
-        {this.state.qrData && <img src={this.state.qrData} alt="QR code" />}
+        {this.state.qrData && 
+          <div className='qrcode'>
+          {!this.state.token_mode && <img src={this.state.qrData} id="qrcode" alt="QR code" />}
+          {this.state.token_mode && <div className='config-key-container'>
+                                      <p className='config-key'>{this.state.configKey}</p>
+                                      <button className="copy-btn" onClick={navigator.clipboard.writeText(this.state.configKey)}>Copy</button>
+                                    </div>}
+          <div className="toggle-container">
+            <label className="toggle-button">
+              <span className="label-text">View setup key</span>
+              <input type="checkbox" defaultChecked={this.state.token_mode} onChange={this.handleTokenMode}/>
+              <div className="slider-container">
+                <div className="slider"></div>
+              </div>
+            </label>
+          </div>
+        </div>
+        }
         <div className="form-group">
             <input type="text" placeholder='username' className="signup-input" id="username"
                    name="username" onChange={this.handleUsername} value={this.state.username}/>
