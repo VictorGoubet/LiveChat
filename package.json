@@ -4,7 +4,8 @@
   "scripts": {
     "back": "cd server && npm start",
     "front": "cd client && npm start",
-    "start": "concurrently \"npm run back\" \"npm run front\"",
+    "start":"npm run back",
+    "dev": "concurrently \"npm run back\" \"npm run front\"",
     "build": "npm install && cd client && npm install && npm run build && cd ../server && npm install"
   },
   "dependencies": {
