@@ -64,7 +64,7 @@ class Chat extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    const data = JSON.stringify({message:this.state.message, username:this.props.username});
+    const data = JSON.stringify({message:this.state.message, username:this.props.userInfo.username});
     this.socket.send(data);
     this.setState({ message: '', showPicker: false });
   };
@@ -90,7 +90,7 @@ class Chat extends Component {
     messages = await messages.json();
     messages = messages.data;
     for (let i=0; i<messages.length; i++){
-      messages[i].type = messages[i].username === this.props.username?'sent':'received'
+      messages[i].type = messages[i].username === this.props.userInfo.username?'sent':'received'
     }
     this.setState({messages});
   };
@@ -117,7 +117,7 @@ class Chat extends Component {
         </div>
         {isPC && showPicker && (
           <div className="emoji-picker">
-            <EmojiPicker onEmojiClick={this.handleEmojiSelect} theme="dark" />
+            <EmojiPicker lazyLoadEmojis={true} onEmojiClick={this.handleEmojiSelect} theme="dark"/>
           </div>
         )}
         <form onSubmit={this.handleSubmit} className="chat-form">

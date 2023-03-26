@@ -1,3 +1,4 @@
+
 /* Chat container */
 .chat-container {
 	width: 100%;
@@ -136,8 +137,45 @@
   }
   
 
+
+/* Add media query to modify chat message style on small devices */
+@media all and (max-width: 800px) {
+
+	.message {
+		width: auto;
+		max-width: 80%;
+		margin-left: 15%;
+		}
+	}
+  
+	.message-content {
+	  padding: 10px;
+	  border-radius: 10px;
+	  display: inline-block;
+	  max-width: 70%;
+	  word-wrap: break-word;
+	}
+  
+	.chat-form {
+	  padding: 10px;
+	}
+  
+	.chat-input {
+	  padding: 10px;
+	  border-radius: 20px;
+	  border: none;
+	  background-color: #2f2e2e;
+	  color: #b52929;
+	  font-size: 14px;
+	}
+  
+	.emoji-picker {
+	  padding: 5px;
+	}
+  
+
   /* Style the scrollbar */
-::-webkit-scrollbar {
+  ::-webkit-scrollbar {
 	width: 10px;
   }
   
