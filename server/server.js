@@ -12,6 +12,8 @@ const server = http.createServer(app);
 const io = socketio(server, {cors: {origin: '*'}});
 const db_manager = new DBManager('LiveChat')
 
+
+let users = []
 db_manager.connect(['messages', 'users']).then(x=>{
 
 
@@ -64,8 +66,8 @@ db_manager.connect(['messages', 'users']).then(x=>{
       });
 
       app.post('/api/checkCookie', async (req, res) => {
-        found_coookie = await db_manager.check_cookie(req.body.username, req.body.accessToken);
-        if (found_coookie){
+        let cookie_data = await db_manager.check_cookie(req.body.username, req.body.accessToken);
+        if (cookie_data.cookie){
           res.status(200).json({success:true});
         }
         else{
@@ -79,9 +81,19 @@ db_manager.connect(['messages', 'users']).then(x=>{
         db_manager.is_username_available(req.body.username).then(x =>{
           res.status(200).json({is_available:x})}, console.log)
       })
+
+      app.post('/api/logout', async (req, res) => {
+        const username = req.body.username;
+        let idx = users.map(x=>x[0] == username && x[1] == req.ip).indexOf(true)
+        if (idx != -1){
+          users.splice(idx, 1);
+        }
+        res.status(200).json({success:true});
+      })
       
       
       app.post('/api/authenticate', async (req, res) => {
+        
         const userToken = req.body.token;
         const username = req.body.username;
         const secret = await db_manager.get_secret(username);
@@ -91,9 +103,18 @@ db_manager.connect(['messages', 'users']).then(x=>{
         else{
           const isAuthenticated = authenticateUserWithGoogleAuth(userToken, secret);
           if (isAuthenticated) {
-            const accessToken = randomUUID()
-            const expire_in = await db_manager.store_cookie(username, accessToken)
-            res.status(200).json({accessToken:accessToken, expire_in:expire_in});
+            const cookie_data = await db_manager.check_cookie(username, null);
+            let cookie = cookie_data.cookie
+            let expire_in = cookie_data.expire
+            if (!cookie){
+              cookie = randomUUID();
+              expire_in = await db_manager.store_cookie(username, cookie);
+            }
+            if (!(users.map(x=>x[0] == username && x[1] == req.ip).includes(true))){
+              users.push([username, req.ip])
+            }
+            
+            res.status(200).json({accessToken:cookie, expire_in:expire_in});
           } else {
             res.status(401).json({ error: 'Invalid token'});
           }
@@ -118,31 +139,22 @@ db_manager.connect(['messages', 'users']).then(x=>{
              * Socket connections *
              **********************/
       
-      let n_users = 0
+     
       io.on('connection', (socket) => {
-        n_users += 1;
+        
+        const n_users = new Set(users.map(x => x[0])).size
         io.emit('connection', n_users);
-      
+        
         // Action on message topic
         socket.on('message', (data) => {
           data = JSON.parse(data);
           
           db_manager.insert_msg(data).then(x => {
-            // Send the message to all connected clients except the sender
-            data.type = 'received'
-            socket.broadcast.emit('message', data);
-      
-            // Send the message back to the sender with a different type
-            data.type = 'sent'
-            socket.emit('message', data);
+            // Redistribute the message to all client
+            io.emit('message', data);
           })    
         });
       
-        // Log disconnection
-        socket.on('disconnect', () => {
-          n_users -= 1;
-          socket.broadcast.emit('connection', n_users);
-        });
       });
       
       

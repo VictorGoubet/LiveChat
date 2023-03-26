@@ -27,10 +27,12 @@ class Chat extends Component {
 
   componentDidMount(){
     this.loadHistory();
+
   };
 
 
   componentWillUnmount() {
+    this.initialWindowHeight = window.innerHeight;
     window.removeEventListener('resize', this.handleResize);
   };
 
@@ -43,8 +45,9 @@ class Chat extends Component {
   
 
   handleMessage = (event) => {
+    event.type = this.props.userInfo.username === event.username?'sent':'received'
     this.setState((prevState) => ({
-      messages: [...prevState.messages, event],
+      messages: [event, ...prevState.messages],
     }));
   };
 
@@ -76,8 +79,14 @@ class Chat extends Component {
   };
 
 
-  handleLogOut = () => {
-    Cookies.remove('live-chat')
+  handleLogOut = async () => {
+    Cookies.remove('live-chat');
+    await fetch('/api/logout', {
+      method:'POST', 
+      headers:{'Content-Type':'application/json'}, 
+      body:JSON.stringify({username:this.props.userInfo.username})
+    });
+    
     window.location.href = '/login'
   }
 
@@ -92,6 +101,7 @@ class Chat extends Component {
     for (let i=0; i<messages.length; i++){
       messages[i].type = messages[i].username === this.props.userInfo.username?'sent':'received'
     }
+    messages = messages.reverse()
     this.setState({messages});
   };
 
@@ -102,7 +112,7 @@ class Chat extends Component {
         <div className="chat-header">
         <button className='button-logout' onClick={this.handleLogOut}>Log out</button>
           <h1>Elite Chat</h1>
-          <h4> 🟢 {this.state.n_users} users</h4>
+          <h4> 🟢 {this.state.n_users} users - {this.props.userInfo.username}</h4>
           
         </div>
         <div className="chat-messages">

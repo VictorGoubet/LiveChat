@@ -96,9 +96,25 @@ class DBManager{
         /** Check if the cookie of a user is valid
          * @param {string} username The name of the user
          * @param {string} accessToken The cookie value
+         * @return {sting, number} The found cookie and the remaining days
          */
-        const user_data = await this.collections.users.findOne({username:username, cookie:accessToken, cookie_expire_on:{$gt:Date.now()}})
-        return user_data != null;
+        let query = {username:username, cookie_expire_on:{$gt:Date.now()}}
+        
+        if (accessToken){
+            query.cookie = accessToken
+        }
+        const user_data = await this.collections.users.findOne(query)
+        let cookie = null
+        let expire = null
+        if (user_data){
+            cookie = user_data.cookie
+            const futureDate = new Date(user_data.cookie_expire_on);
+            const now = new Date();
+            const diffInTime = futureDate.getTime() - now.getTime();
+            expire = Math.ceil(diffInTime / (1000 * 3600 * 24));
+        }
+        
+        return {cookie, expire};
     }
 
     async get_secret(username){

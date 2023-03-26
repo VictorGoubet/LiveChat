@@ -34,13 +34,15 @@
   /* Chat messages */
   .chat-messages {
 	flex: 1;
+	display: flex;
+	flex-direction: column-reverse;
 	padding: 10px;
 	overflow-y: auto;
   }
   
   /* Chat message */
   .message {
-	margin: 30px 0;
+	margin: 20px 0;
 	width: 100%;
   }
   
@@ -142,9 +144,8 @@
 @media all and (max-width: 800px) {
 
 	.message {
-		width: auto;
-		max-width: 80%;
-		margin-left: 15%;
+		margin-left: auto;
+		margin-right: auto;
 		}
 	}
   
