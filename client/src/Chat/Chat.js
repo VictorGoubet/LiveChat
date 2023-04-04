@@ -27,7 +27,6 @@ class Chat extends Component {
 
   componentDidMount(){
     this.loadHistory();
-
   };
 
 
@@ -43,7 +42,6 @@ class Chat extends Component {
     }
   };
   
-
   handleMessage = (event) => {
     event.type = this.props.userInfo.username === event.username?'sent':'received'
     this.setState((prevState) => ({

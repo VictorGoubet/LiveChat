@@ -96,7 +96,7 @@ class DBManager{
         /** Check if the cookie of a user is valid
          * @param {string} username The name of the user
          * @param {string} accessToken The cookie value
-         * @return {sting, number} The found cookie and the remaining days
+         * @returns {sting, number} The found cookie and the remaining days
          */
         let query = {username:username, cookie_expire_on:{$gt:Date.now()}}
         
@@ -120,6 +120,7 @@ class DBManager{
     async get_secret(username){
         /** Get the secret of a user
          * @param {string} username The name of the user
+         * @returns {string} The secret of the user
          */
         let secret = await this.collections.users.findOne({username:username, validated:true})
         if (secret){

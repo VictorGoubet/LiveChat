@@ -15,13 +15,6 @@ class Login extends Component {
   }
 
 
-  handleUsername = async (event) => {
-    this.setState({username:event.target.value})
-    if (event.target.value !== '' && this.state.token.length === 6){
-      await this.authenticate(event.target.value, this.state.token)
-    }
-  }
-
 
   authenticate = async (username, secret) => {
     let res = await fetch('/api/authenticate', {method:'POST',
@@ -39,6 +32,15 @@ class Login extends Component {
       this.setState({is_good_token:false, label_message:res.error})
     }
   }
+
+
+  handleUsername = async (event) => {
+    this.setState({username:event.target.value})
+    if (event.target.value !== '' && this.state.token.length === 6){
+      await this.authenticate(event.target.value, this.state.token)
+    }
+  }
+
 
   handleToken = async (event) => {
     if (event.target.value.length <= 6) {
@@ -61,7 +63,6 @@ class Login extends Component {
                    name="token" onChange={this.handleToken} value={this.state.token}/>
             {this.state.is_good_token === false && <label className='token-label'>{this.state.label_message}</label>}
         </div>
-        
         <a href="/signup">Want to create an account?</a>
       </div>
     )

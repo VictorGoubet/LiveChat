@@ -16,11 +16,18 @@ class SignUp extends Component {
 
 
 
+  validateUser = async (event) => {
+    await fetch('/api/validateUser', {method:'POST', 
+                                      headers:{'Content-Type':'application/json'}, 
+                                      body:JSON.stringify({username:this.state.username})});
+    window.location.href = '/login'
+  }
+
+
   generateQRCode = async() => {
     let response = await fetch('/api/generateGoogleAutQRCode', {method:'POST', 
                                                                 headers:{'Content-Type':'application/json'}, 
                                                                 body:JSON.stringify({username:this.state.username})});
-
     if (response.status === 200){
       response = await response.json();
       this.setState({configKey:response.configKey});
@@ -54,12 +61,7 @@ class SignUp extends Component {
 
 
 
-  validateUser = async (event) => {
-    await fetch('/api/validateUser', {method:'POST', 
-                                      headers:{'Content-Type':'application/json'}, 
-                                      body:JSON.stringify({username:this.state.username})});
-    window.location.href = '/login'
-  }
+
 
 
   render() {
