@@ -148,4 +148,4 @@ Victor Goubet - victorgoubet@orange.fr
 [issues-url]: https://github.com/VictorGoubet/LiveChat/issues
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/victorgoubet/
-[product-screenshot]: screenshot.PNG
+[product-screenshot]: screenshot.png
